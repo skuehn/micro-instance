@@ -1,5 +1,4 @@
 locals {
-  instance_type      = "t2.micro"
   user_name          = "microinstance"
   key_name           = "microinstance_key"
   key_filename       = "${path.module}/.tmp-key.pem"
@@ -10,6 +9,11 @@ locals {
 variable "aws_region" {
   description = "Region hosting the micro instance"
   default     = "us-east-1"
+}
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  default     = "t2.micro"
 }
 
 provider "aws" {
@@ -33,7 +37,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "micro_host" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = local.instance_type
+  instance_type               = var.instance_type
   vpc_security_group_ids      = [aws_security_group.sec.id]
   subnet_id                   = aws_subnet.micro_subnet.id
   associate_public_ip_address = true
