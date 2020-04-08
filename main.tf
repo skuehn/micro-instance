@@ -1,9 +1,3 @@
-locals {
-  user_name    = "microinstance"
-  key_name     = "microinstance_key"
-  key_filename = "${path.module}/.tmp-key.pem"
-}
-
 variable "aws_region" {
   description = "Region hosting the micro instance"
   default     = "us-east-1"
@@ -40,7 +34,7 @@ resource "aws_instance" "micro_host" {
   subnet_id                   = aws_subnet.micro_subnet.id
   associate_public_ip_address = true
   source_dest_check           = false
-  key_name                    = aws_key_pair.user_ssh_key.key_name
+  key_name                    = aws_key_pair.key_pair.key_name
 }
 
 output "instance_hostname" {
