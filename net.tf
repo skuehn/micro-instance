@@ -1,24 +1,23 @@
-resource "aws_vpc" "default" {
-  cidr_block           = local.vpc_cidr
+resource "aws_vpc" "micro_vpc" {
+  cidr_block           = "10.0.0.0/24"
   enable_dns_hostnames = true
 }
 
-resource "aws_internet_gateway" "default" {
-  vpc_id = aws_vpc.default.id
+resource "aws_internet_gateway" "micro_gateway" {
+  vpc_id = aws_vpc.micro_vpc.id
 }
 
 resource "aws_subnet" "micro_subnet" {
-  vpc_id            = aws_vpc.default.id
-  cidr_block        = local.public_subnet_cidr
-  availability_zone = "${var.aws_region}a"
+  vpc_id     = aws_vpc.micro_vpc.id
+  cidr_block = "10.0.0.0/27"
 }
 
 resource "aws_route_table" "micro_route_table" {
-  vpc_id = aws_vpc.default.id
+  vpc_id = aws_vpc.micro_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.default.id
+    gateway_id = aws_internet_gateway.micro_gateway.id
   }
 }
 
@@ -27,7 +26,7 @@ resource "aws_route_table_association" "micro_route_table_association" {
   route_table_id = aws_route_table.micro_route_table.id
 }
 
-resource "aws_security_group" "sec" {
+resource "aws_security_group" "micro_security_group" {
   name = "vpc_web"
 
   ingress {
@@ -51,5 +50,5 @@ resource "aws_security_group" "sec" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  vpc_id = aws_vpc.default.id
+  vpc_id = aws_vpc.micro_vpc.id
 }

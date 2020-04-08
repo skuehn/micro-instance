@@ -1,9 +1,7 @@
 locals {
-  user_name          = "microinstance"
-  key_name           = "microinstance_key"
-  key_filename       = "${path.module}/.tmp-key.pem"
-  vpc_cidr           = "10.0.0.0/16"
-  public_subnet_cidr = "10.0.0.0/24"
+  user_name    = "microinstance"
+  key_name     = "microinstance_key"
+  key_filename = "${path.module}/.tmp-key.pem"
 }
 
 variable "aws_region" {
@@ -38,7 +36,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "micro_host" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
-  vpc_security_group_ids      = [aws_security_group.sec.id]
+  vpc_security_group_ids      = [aws_security_group.micro_security_group.id]
   subnet_id                   = aws_subnet.micro_subnet.id
   associate_public_ip_address = true
   source_dest_check           = false

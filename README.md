@@ -49,4 +49,4 @@ Run `terraform destroy -force -var 'aws_region=<region>'`
 issue consider creating your own key pair and reconfiguring the
 `aws_instance` resource to take a provided (via terraform variable)
 public key as a runtime variable.
-1. TODO's: narrow the policy scope, revisit vpc and cidr blocks, improve subnet selection, parameterize the instance type
+1. TODO's: narrow the policy scope
